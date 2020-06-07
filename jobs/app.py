@@ -6,32 +6,26 @@ PATH='db/jobs.sqlite'
 app = Flask(__name__)
 
 def open_conection():
-    getattr(g, _connection, None)
-    connection = getattr
+    connection = getattr(g, _connection, None)
     if connection is None:
-        connection = sqlite3.connect(PATH) 
-        g._connection = sqlite3.connect(PATH) 
+        connection = g._connection = sqlite3.connect(PATH) 
     connection.row_factory = sqlite3.Row
     return connection
 
-def execute_sql(sql, values, commit, single):
-    values = ()
-    commit = False 
-    single = False 
+def execute_sql(sql, values=(), commit=False, single=False):
     connection = open_connection()
     cursor = connection.execute(sql, values)
     if commit == True:
         results = connection.commit()
-    elif cursor.fetchone() == single:
-        results = cursor.fetchone()
     else:
-        results = cursor.fetchall()
+        results = cursor.fetchone() if single else cursor.fetchall()
+    cursor.close()
     return results
 
 @app.teardown_appcontext
 def close_connection(exception):
     connection = getattr(g, '_connection', None)
-    if connection != None: 
+    if connection is not None: 
         connection.close()
 
 
