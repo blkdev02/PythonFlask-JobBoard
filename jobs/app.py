@@ -1,12 +1,12 @@
 import sqlite3
 from flask import Flask, render_template, g
 
-PATH=/Users/david.boadu/Documents/my_skills_improvement/pluralsight_project/v2/PythonFlask-JobBoard/db/jobs.sqlite
+PATH=Users/david.boadu/Documents/my_skills_improvement/pluralsight_project/v2/PythonFlask-JobBoard/db/jobs.sqlite
 
 app = Flask(__name__)
 
 def open_conection():
-    getattr(g._connection = None)
+    getattr(_connection = None)
     connection = getattr
     if connection == None:
         connection = sqlite3.connect(PATH) 
@@ -30,7 +30,7 @@ def execute_sql(sql, values, commit, single):
 
 @app.teardown_appcontext
 def close_connection(exception):
-    connection = getattr(g, ,'_connection', None)
+    connection = getattr(g, '_connection', None)
     if connection != None: 
         connection.close()
 
